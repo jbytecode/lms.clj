@@ -1,6 +1,5 @@
-(ns lmsreg.datasets)
-
-(use 'clojure.core.matrix)
+(ns lmsreg.datasets
+  (:require [clojure.core.matrix :refer :all]))
 
 (def toy-dataset-1
   {:x  (matrix [[1 1]

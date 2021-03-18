@@ -1,7 +1,7 @@
-(ns lmsreg.lms)
-
-(use 'clojure.core.matrix)
-(use 'lmsreg.ols)
+(ns lmsreg.lms
+  (:require
+   [clojure.core.matrix :refer :all]
+   [lmsreg.ols :refer :all]))
 
 (defn lms-objective
   "
@@ -22,14 +22,13 @@
     indices (take k (distinct (repeatedly #(rand-int n))))
     sub-x (map #(nth x %1) indices)
     sub-y (map #(nth y %1) indices)
-    sub-ols (ols sub-x sub-y)
-    betas (:betas sub-ols)
+    betas (ols-fit sub-x sub-y)
     objective (lms-objective x y betas)] {:betas betas :indices indices :objective objective}))
 
 (defn lms-random [x y nsamples]
   (let [n (count y)
         p (count (first x))
         p1 (inc p)
-        samples (take nsamples (repeatedly #(lms-random-subset-of-k x y (max p1 (rand-int n)))))
-        best  (first (sort-by #(:objective %1) samples))] best))
+        samples (take nsamples (repeatedly #(future (lms-random-subset-of-k x y (max p1 (rand-int n))))))
+        best  (first (sort-by #(:objective (deref %1)) samples))] @best))
 

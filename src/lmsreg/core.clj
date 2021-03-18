@@ -1,11 +1,10 @@
 (ns lmsreg.core
+  (:require [clojure.core.matrix :refer :all]
+            [lmsreg.datasets :refer :all]
+            [lmsreg.stats :refer :all]
+            [lmsreg.ols :refer :all]
+            [lmsreg.lms :refer :all])
   (:gen-class))
-
-(use 'clojure.core.matrix)
-(use 'lmsreg.datasets)
-(use 'lmsreg.stats)
-(use 'lmsreg.ols)
-(use 'lmsreg.lms)
 
 (defn -main [& args]
   (let

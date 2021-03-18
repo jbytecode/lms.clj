@@ -1,6 +1,5 @@
-(ns lmsreg.ols)
-
-(use 'clojure.core.matrix)
+(ns lmsreg.ols
+  (:require [clojure.core.matrix :refer :all]))
 
 (defn add-ones-to-x [x]
   (let
@@ -10,6 +9,11 @@
     ones (take n (repeat 1))
     f (flatten (map #(conj [%1 %2])  ones x))
     mat (reshape f (list n newp))] mat))
+
+(defn ols-fit [x y]
+  (let
+   [xt (transpose x)
+    betas (mmul (mmul (inverse (mmul xt x)) xt) y)] betas))
 
 (defn ols [x y]
   (let
