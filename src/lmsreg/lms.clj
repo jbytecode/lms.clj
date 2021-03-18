@@ -28,10 +28,10 @@
 (defn lms-random
   ([x y nsamples]
    (let [n (count y)
-         p (count (first x))
+         p (if (= (dimensionality x) 1) 1 (count (first x)))
          p1 (inc p)
          samples (pmap (fn [i] (lms-random-subset-of-k x y (max p1 (rand-int n)))) (range nsamples))
          best  (first (sort-by #(:objective %1) samples))] best))
   ([x y]
-   (let [p (count (first x))
+   (let [p (if (= (dimensionality x) 1) 1 (count (first x)))
          nsamples (* p 500)] (lms-random x y nsamples))))
