@@ -29,6 +29,6 @@
   (let [n (count y)
         p (count (first x))
         p1 (inc p)
-        samples (take nsamples (repeatedly #(future (lms-random-subset-of-k x y (max p1 (rand-int n))))))
-        best  (first (sort-by #(:objective (deref %1)) samples))] @best))
+        samples (pmap (fn [i] (lms-random-subset-of-k x y (max p1 (rand-int n)))) (range nsamples))
+        best  (first (sort-by #(:objective %1) samples))] best))
 
