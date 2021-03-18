@@ -25,10 +25,13 @@
     betas (ols-fit sub-x sub-y)
     objective (lms-objective x y betas)] {:betas betas :indices indices :objective objective}))
 
-(defn lms-random [x y nsamples]
-  (let [n (count y)
-        p (count (first x))
-        p1 (inc p)
-        samples (pmap (fn [i] (lms-random-subset-of-k x y (max p1 (rand-int n)))) (range nsamples))
-        best  (first (sort-by #(:objective %1) samples))] best))
-
+(defn lms-random
+  ([x y nsamples]
+   (let [n (count y)
+         p (count (first x))
+         p1 (inc p)
+         samples (pmap (fn [i] (lms-random-subset-of-k x y (max p1 (rand-int n)))) (range nsamples))
+         best  (first (sort-by #(:objective %1) samples))] best))
+  ([x y]
+   (let [p (count (first x))
+         nsamples (* p 500)] (lms-random x y nsamples))))
