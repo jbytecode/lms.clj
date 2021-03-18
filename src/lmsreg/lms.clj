@@ -11,7 +11,7 @@
   [x y betas]
   (let
    [n  (count x)
-    p (count (first x))
+    p (if (= (dimensionality x) 1) 1 (count (first x)))
     h  (/ (+ n p 1) 2)
     residuals (sub y (mmul x betas))
     sqresiduals (sort (map #(Math/pow %1 2) residuals))] (nth sqresiduals (dec h))))
@@ -30,7 +30,7 @@
    (let [n (count y)
          p (if (= (dimensionality x) 1) 1 (count (first x)))
          p1 (inc p)
-         samples (pmap (fn [i] (lms-random-subset-of-k x y (max p1 (rand-int n)))) (range nsamples))
+         samples (map (fn [i] (lms-random-subset-of-k x y (max p1 (rand-int n)))) (range nsamples))
          best  (first (sort-by #(:objective %1) samples))] best))
   ([x y]
    (let [p (if (= (dimensionality x) 1) 1 (count (first x)))

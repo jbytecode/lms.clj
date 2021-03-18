@@ -6,6 +6,12 @@
             [lmsreg.lms :refer :all])
   (:gen-class))
 
+(defn is-vector-approx [x y eps]
+  (< (apply + (map #(Math/pow %1 2) (sub x y))) eps))
+
+(defn is-scaler-approx [x y eps]
+  (< (Math/pow (- x y) 2) eps))
+
 (defn -main [& args]
   (let
    [x (add-ones-to-x (:year phones-dataset))
