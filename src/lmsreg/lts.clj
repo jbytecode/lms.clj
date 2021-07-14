@@ -45,3 +45,21 @@
    (take steps)
    (last)
    (sort)))
+
+(defn objective-for-indices [x y indices]
+  (let
+   [n             (count y)
+    p             (if (= (matrix/dimensionality x) 1) 1 (count (first x)))
+    h             (/ (+ n p 1) 2)
+    xsub          (vec (map #(nth x %1) indices))
+    ysub          (vec (map #(nth y %1) indices))
+    betas         (ols/ols-fit xsub ysub)
+    residuals     (matrix/sub y (matrix/mmul x betas))
+    sqres         (map #(Math/pow %1 2.0) residuals)
+    sumsqres      (apply + (take h (sort sqres)))]
+    sumsqres))
+
+;(use '[lmsreg.datasets :as datasets])
+;(def x (ols/add-ones-to-x (:year datasets/phones-dataset)))
+;(def y (:calls datasets/phones-dataset))
+;(objective-for-indices x y [0 1 2 3 4 5 6 7 8 9 10 11 12 13])
