@@ -10,10 +10,13 @@
     f (flatten (map #(conj [%1 %2])  ones x))
     mat (reshape f (list n newp))] mat))
 
+
 (defn ols-fit [x y]
-  (let
-   [xt (transpose x)
-    betas (mmul (mmul (inverse (mmul xt x)) xt) y)] betas))
+  (let [xt (transpose x)] (-> (mmul xt x)
+                              (inverse)
+                              (mmul xt)
+                              (mmul y))))
+
 
 (defn ols [x y]
   (let
