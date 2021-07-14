@@ -38,4 +38,9 @@
                       (map first))] best-indices))
 
 
-
+(defn iterate-csteps [x y initial-indices steps]
+  (->>
+   (iterate #(c-step x y %1) initial-indices)
+   (take steps)
+   (last)
+   (sort)))

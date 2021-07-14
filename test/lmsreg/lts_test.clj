@@ -30,3 +30,13 @@
              (sort))
 
          (list 0 1 2 3 4)))))
+
+
+(deftest iterate-csteps
+  (testing "Iterate c-steps for a given subset"
+    (is (=
+         (let
+          [x (ols/add-ones-to-x (:year datasets/phones-dataset))
+           y (:calls datasets/phones-dataset)] (lts/iterate-csteps x y [0 1 2 3 4] 500))
+
+         (list 0 1 2 3 4 5 6 7 8 9 10 11 12 21)))))
