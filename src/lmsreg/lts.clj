@@ -37,10 +37,11 @@
                       (take h)
                       (map first))] best-indices))
 
+(def c-step-memoized (memoize c-step))
 
 (defn iterate-csteps [x y initial-indices steps]
   (->>
-   (iterate #(c-step x y %1) initial-indices)
+   (iterate #(c-step-memoized x y %1) initial-indices)
    (take steps)
    (last)
    (sort)))
